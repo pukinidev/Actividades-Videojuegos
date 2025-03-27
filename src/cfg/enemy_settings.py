@@ -33,7 +33,7 @@ class EnemySettings:
 
         with open(self.enemy_path, "w") as file:
             json.dump({"enemies": enemies}, file, indent=4)
-            
+
         return enemies
 
     def _create_level_enemies(self, enemies: list) -> None:
@@ -51,8 +51,6 @@ class EnemySettings:
 
         with open("assets/cfg/level_01.json", "w") as file:
             json.dump({"level_enemies": level_enemies}, file, indent=4)
-            
-        
 
     def get_settings(self) -> dict:
         return json.load(open(self.enemy_path))
