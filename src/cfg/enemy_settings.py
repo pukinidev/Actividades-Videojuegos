@@ -1,12 +1,14 @@
 import random
 import json
 
+from src.cfg.game_settings import GameSettings
+
 
 class EnemySettings:
 
-    def __init__(self, window_size: tuple) -> None:
+    def __init__(self) -> None:
         self.enemy_path = "assets/cfg/enemies.json"
-        self.window_size = window_size
+        self.window_size = GameSettings().get_window_size()
         self._load_settings()
 
     def _load_settings(self) -> None:

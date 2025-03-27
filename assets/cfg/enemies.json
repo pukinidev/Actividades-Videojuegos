@@ -1,28 +1,15 @@
 {
     "Type_0": {
         "color": {
-            "r": 128,
-            "g": 165,
-            "b": 98
+            "r": 248,
+            "g": 87,
+            "b": 85
         },
         "size": {
-            "x": 21,
-            "y": 48
+            "x": 35,
+            "y": 38
         },
-        "velocity_min": 48,
-        "velocity_max": 170
-    },
-    "Type_1": {
-        "color": {
-            "r": 179,
-            "g": 84,
-            "b": 108
-        },
-        "size": {
-            "x": 14,
-            "y": 31
-        },
-        "velocity_min": 57,
-        "velocity_max": 163
+        "velocity_min": 80,
+        "velocity_max": 108
     }
 }
