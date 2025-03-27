@@ -2,25 +2,25 @@
     "level_enemies": [
         {
             "type": "enemy_0",
-            "time": 8,
+            "time": 5,
             "position": {
-                "x": 587,
-                "y": 328
+                "x": 453,
+                "y": 566
             }
         },
         {
             "type": "enemy_1",
-            "time": 8,
+            "time": 10,
             "position": {
-                "x": 796,
-                "y": 436
+                "x": 369,
+                "y": 580
             }
         },
         {
             "type": "enemy_2",
-            "time": 1,
+            "time": 4,
             "position": {
-                "x": 681,
+                "x": 108,
                 "y": 595
             }
         },
@@ -28,40 +28,24 @@
             "type": "enemy_3",
             "time": 8,
             "position": {
-                "x": 653,
-                "y": 11
+                "x": 285,
+                "y": 490
             }
         },
         {
             "type": "enemy_4",
-            "time": 9,
+            "time": 3,
             "position": {
-                "x": 65,
-                "y": 230
+                "x": 248,
+                "y": 404
             }
         },
         {
             "type": "enemy_5",
-            "time": 5,
+            "time": 3,
             "position": {
-                "x": 781,
-                "y": 73
-            }
-        },
-        {
-            "type": "enemy_6",
-            "time": 10,
-            "position": {
-                "x": 152,
-                "y": 156
-            }
-        },
-        {
-            "type": "enemy_7",
-            "time": 2,
-            "position": {
-                "x": 626,
-                "y": 14
+                "x": 107,
+                "y": 171
             }
         }
     ]

@@ -11,7 +11,7 @@ class EnemySettings:
     def _load_settings(self) -> None:
         self.check_settings()
 
-    def _create_enemies(self) -> None:
+    def _create_enemies(self) -> list:
         enemies = []
         n_enemies = random.randint(4, 8)
         for enemy in range(n_enemies):
@@ -33,10 +33,12 @@ class EnemySettings:
 
         with open(self.enemy_path, "w") as file:
             json.dump({"enemies": enemies}, file, indent=4)
+            
+        return enemies
 
-    def _create_level_enemies(self, enemies: dict) -> None:
+    def _create_level_enemies(self, enemies: list) -> None:
         level_enemies = []
-        for enemy in enemies["enemies"]:
+        for enemy in enemies:
             level = {
                 "type": enemy["name"],
                 "time": random.randint(1, 10),
@@ -49,6 +51,8 @@ class EnemySettings:
 
         with open("assets/cfg/level_01.json", "w") as file:
             json.dump({"level_enemies": level_enemies}, file, indent=4)
+            
+        
 
     def get_settings(self) -> dict:
         return json.load(open(self.enemy_path))
@@ -57,6 +61,6 @@ class EnemySettings:
         try:
             self.get_settings()
         except FileNotFoundError:
-            self._create_enemies()
-            self._create_level_enemies(self.get_settings())
+            enemies = self._create_enemies()
+            self._create_level_enemies(enemies)
             print("Enemies settings created")
