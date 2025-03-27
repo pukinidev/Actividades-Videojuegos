@@ -1,52 +1,20 @@
 {
-    "level_enemies": [
-        {
-            "type": "enemy_0",
-            "time": 5,
-            "position": {
-                "x": 453,
-                "y": 566
-            }
-        },
-        {
-            "type": "enemy_1",
-            "time": 10,
-            "position": {
-                "x": 369,
-                "y": 580
-            }
-        },
-        {
-            "type": "enemy_2",
-            "time": 4,
-            "position": {
-                "x": 108,
-                "y": 595
-            }
-        },
-        {
-            "type": "enemy_3",
+    "enemy_spawn_events": {
+        "0": {
             "time": 8,
+            "enemy_type": "Type_0",
             "position": {
-                "x": 285,
-                "y": 490
+                "x": 114,
+                "y": 142
             }
         },
-        {
-            "type": "enemy_4",
-            "time": 3,
+        "1": {
+            "time": 9,
+            "enemy_type": "Type_1",
             "position": {
-                "x": 248,
-                "y": 404
-            }
-        },
-        {
-            "type": "enemy_5",
-            "time": 3,
-            "position": {
-                "x": 107,
-                "y": 171
+                "x": 331,
+                "y": 306
             }
         }
-    ]
+    }
 }

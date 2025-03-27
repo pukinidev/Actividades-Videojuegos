@@ -4,19 +4,19 @@ import json
 
 class EnemySettings:
 
-    def __init__(self) -> None:
+    def __init__(self, window_size: tuple) -> None:
         self.enemy_path = "assets/cfg/enemies.json"
+        self.window_size = window_size
         self._load_settings()
 
     def _load_settings(self) -> None:
         self.check_settings()
 
-    def _create_enemies(self) -> list:
-        enemies = []
-        n_enemies = random.randint(4, 8)
-        for enemy in range(n_enemies):
+    def _create_enemies(self) -> dict:
+        enemies = {}
+        n_enemies = random.randint(0, 8)
+        for i in range(n_enemies):
             enemy = {
-                "name": f"enemy_{enemy}",
                 "color": {
                     "r": random.randint(0, 255),
                     "g": random.randint(0, 255),
@@ -26,31 +26,31 @@ class EnemySettings:
                     "x": random.randint(10, 50),
                     "y": random.randint(10, 50),
                 },
-                "vmin": random.randint(40, 100),
-                "vmax": random.randint(100, 200),
+                "velocity_min": random.randint(40, 100),
+                "velocity_max": random.randint(100, 200),
             }
-            enemies.append(enemy)
-
+            enemies[f"Type_{i}"] = enemy
+            
         with open(self.enemy_path, "w") as file:
-            json.dump({"enemies": enemies}, file, indent=4)
+            json.dump(enemies, file, indent=4)
 
         return enemies
 
-    def _create_level_enemies(self, enemies: list) -> None:
-        level_enemies = []
-        for enemy in enemies:
-            level = {
-                "type": enemy["name"],
-                "time": random.randint(1, 10),
+    def _create_level_enemies(self, enemies: dict) -> None:
+        level_enemies = {}
+        for i, enemy in enumerate(enemies):
+            level_enemy = {
+                "time": random.randint(0, 10),
+                "enemy_type": enemy,
                 "position": {
-                    "x": random.randint(0, 800),
-                    "y": random.randint(0, 600),
+                    "x": random.randint(0, self.window_size[0]),
+                    "y": random.randint(0, self.window_size[1]),
                 },
             }
-            level_enemies.append(level)
-
+            level_enemies[f"{i}"] = level_enemy
+            
         with open("assets/cfg/level_01.json", "w") as file:
-            json.dump({"level_enemies": level_enemies}, file, indent=4)
+            json.dump({"enemy_spawn_events": level_enemies}, file, indent=4)
 
     def get_settings(self) -> dict:
         return json.load(open(self.enemy_path))

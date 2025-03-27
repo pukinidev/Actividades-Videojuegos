@@ -13,9 +13,10 @@ class GameEngine:
     def __init__(self) -> None:
         pygame.init()
         self.config = GameSettings()
-        self.screen = pygame.display.set_mode( self.config.get_window_size(), pygame.SCALED)
+        self.window_size = self.config.get_window_size()
+        self.screen = pygame.display.set_mode(self.window_size, pygame.SCALED)
         self.title = pygame.display.set_caption(self.config.get_window_title())
-        self.enemies = EnemySettings()
+        self.enemies = EnemySettings(self.window_size)
         self.clock = pygame.time.Clock()
         self.is_running = False
         self.framerate = self.config.get_window_framerate()

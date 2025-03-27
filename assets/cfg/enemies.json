@@ -1,88 +1,28 @@
 {
-    "enemies": [
-        {
-            "name": "enemy_0",
-            "color": {
-                "r": 68,
-                "g": 131,
-                "b": 22
-            },
-            "size": {
-                "x": 19,
-                "y": 40
-            },
-            "vmin": 42,
-            "vmax": 172
+    "Type_0": {
+        "color": {
+            "r": 128,
+            "g": 165,
+            "b": 98
         },
-        {
-            "name": "enemy_1",
-            "color": {
-                "r": 5,
-                "g": 143,
-                "b": 71
-            },
-            "size": {
-                "x": 41,
-                "y": 17
-            },
-            "vmin": 100,
-            "vmax": 180
+        "size": {
+            "x": 21,
+            "y": 48
         },
-        {
-            "name": "enemy_2",
-            "color": {
-                "r": 119,
-                "g": 177,
-                "b": 198
-            },
-            "size": {
-                "x": 40,
-                "y": 44
-            },
-            "vmin": 54,
-            "vmax": 186
+        "velocity_min": 48,
+        "velocity_max": 170
+    },
+    "Type_1": {
+        "color": {
+            "r": 179,
+            "g": 84,
+            "b": 108
         },
-        {
-            "name": "enemy_3",
-            "color": {
-                "r": 210,
-                "g": 24,
-                "b": 206
-            },
-            "size": {
-                "x": 46,
-                "y": 42
-            },
-            "vmin": 66,
-            "vmax": 113
+        "size": {
+            "x": 14,
+            "y": 31
         },
-        {
-            "name": "enemy_4",
-            "color": {
-                "r": 157,
-                "g": 202,
-                "b": 79
-            },
-            "size": {
-                "x": 37,
-                "y": 28
-            },
-            "vmin": 96,
-            "vmax": 143
-        },
-        {
-            "name": "enemy_5",
-            "color": {
-                "r": 218,
-                "g": 240,
-                "b": 145
-            },
-            "size": {
-                "x": 13,
-                "y": 47
-            },
-            "vmin": 89,
-            "vmax": 167
-        }
-    ]
+        "velocity_min": 57,
+        "velocity_max": 163
+    }
 }
