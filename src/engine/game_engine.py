@@ -1,11 +1,12 @@
 import esper
 import pygame
 
+from src.cfg.enemy_settings import EnemySettings
 from src.create.prefab_create import crear_cuadrado
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
-from src.engine.game_settings import GameSettings
+from src.cfg.game_settings import GameSettings
 
 
 class GameEngine:
@@ -14,11 +15,13 @@ class GameEngine:
         self.config = GameSettings()
         self.screen = pygame.display.set_mode( self.config.get_window_size(), pygame.SCALED)
         self.title = pygame.display.set_caption(self.config.get_window_title())
+        self.enemies = EnemySettings()
         self.clock = pygame.time.Clock()
         self.is_running = False
         self.framerate = self.config.get_window_framerate()
         self.delta_time = 0
         self.ecs_world = esper.World()
+        
 
     def run(self) -> None:
         self._create()

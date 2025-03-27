@@ -1,12 +1,10 @@
 import json
-import os
+
 
 
 class GameSettings:
     def __init__(self):
-        config_path = os.path.join(os.path.dirname(
-            __file__), "../../assets/cfg/window.json")
-        self.window_config = json.load(open(config_path))['window']
+        self.window_config = json.load(open('assets/cfg/window.json'))['window']
 
     def get_window_size(self) -> tuple:
         size = self.window_config['size']
