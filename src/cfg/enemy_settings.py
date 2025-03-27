@@ -14,7 +14,7 @@ class EnemySettings:
 
     def _create_enemies(self) -> dict:
         enemies = {}
-        n_enemies = random.randint(0, 8)
+        n_enemies = random.randint(0, 4)
         for i in range(n_enemies):
             enemy = {
                 "color": {
