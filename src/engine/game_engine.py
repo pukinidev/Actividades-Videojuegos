@@ -1,7 +1,6 @@
 import esper
 import pygame
-import json
-import os
+
 from src.create.prefab_create import crear_cuadrado
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_rendering import system_rendering
