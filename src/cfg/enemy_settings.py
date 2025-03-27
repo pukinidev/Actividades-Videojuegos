@@ -28,8 +28,8 @@ class EnemySettings:
                     "x": random.randint(10, 50),
                     "y": random.randint(10, 50),
                 },
-                "velocity_min": random.randint(40, 100),
-                "velocity_max": random.randint(100, 200),
+                "velocity_min": random.randint(0, 4),
+                "velocity_max": random.randint(5, 10),
             }
             enemies[f"Type_{i}"] = enemy
             
