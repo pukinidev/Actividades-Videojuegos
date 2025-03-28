@@ -22,14 +22,10 @@ def crear_cuadrado(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2
     
 def crear_enemy(world: esper.World, enemy_type: str, position: pygame.Vector2, enemies_config: dict) -> int:
     cfg = enemies_config[enemy_type]
-
     size = pygame.Vector2(cfg["size"]["x"], cfg["size"]["y"])
     color = pygame.Color(cfg["color"]["r"], cfg["color"]["g"], cfg["color"]["b"])
-
     speed = random.uniform(cfg["velocity_min"], cfg["velocity_max"])
-    angle = random.uniform(0, 360)  
-
-    direction = pygame.Vector2()
-    direction.from_polar((speed, angle))
+    angle = random.uniform(0, 2 * math.pi)
+    direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
 
     return crear_cuadrado(world, size, position, direction, color)

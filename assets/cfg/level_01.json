@@ -9,7 +9,7 @@
             }
         },
         {
-            "time": 0,
+            "time": 2,
             "enemy_type": "TypeB",
             "position": {
                 "x": 500,
@@ -17,7 +17,7 @@
             }
         },
         {
-            "time": 0,
+            "time": 4,
             "enemy_type": "TypeC",
             "position": {
                 "x": 200,
