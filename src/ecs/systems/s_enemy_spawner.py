@@ -10,6 +10,7 @@ def system_enemy_spawner(world: esper.World, delta_time: float, enemies_config: 
     c_e: CEnemySpawner
     
     for entity, (c_e,) in components:
+        # TODO: fix bounce problem with velocity
         c_e.time_accumulator += delta_time
         for i, event in enumerate(c_e.spawn_events):
             if not c_e.spawned_flags[i] and c_e.time_accumulator >= event["time"]:

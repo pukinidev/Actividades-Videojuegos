@@ -3,6 +3,7 @@ import random
 import esper
 import pygame
 
+from src.ecs.components.c_enemy_spawner import CEnemySpawner
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.c_velocity import CVelocity
@@ -29,3 +30,9 @@ def crear_enemy(world: esper.World, enemy_type: str, position: pygame.Vector2, e
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
 
     return crear_cuadrado(world, size, position, direction, color)
+
+
+def crear_spawner_entity(world: esper.World) -> int:
+    spawner_entity = world.create_entity()
+    world.add_component(spawner_entity, CEnemySpawner())
+    return spawner_entity

@@ -2,8 +2,7 @@ import esper
 import pygame
 
 from src.cfg.enemy_settings import EnemySettings
-from src.create.prefab_create import crear_cuadrado
-from src.ecs.components.c_enemy_spawner import CEnemySpawner
+from src.create.prefab_create import crear_spawner_entity
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
@@ -36,8 +35,7 @@ class GameEngine:
         self._clean()
 
     def _create(self):
-        spawner_entity = self.ecs_world.create_entity()
-        self.ecs_world.add_component(spawner_entity, CEnemySpawner())
+        crear_spawner_entity(self.ecs_world)
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
