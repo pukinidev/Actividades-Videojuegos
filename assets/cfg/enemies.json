@@ -1,15 +1,41 @@
 {
-    "Type_0": {
-        "color": {
-            "r": 248,
-            "g": 87,
-            "b": 85
-        },
+    "TypeA": {
         "size": {
-            "x": 35,
-            "y": 38
+            "x": 10,
+            "y": 10
         },
-        "velocity_min": 80,
-        "velocity_max": 108
+        "color": {
+            "r": 100,
+            "g": 255,
+            "b": 255
+        },
+        "velocity_min": 40,
+        "velocity_max": 40
+    },
+    "TypeB": {
+        "size": {
+            "x": 20,
+            "y": 20
+        },
+        "color": {
+            "r": 255,
+            "g": 100,
+            "b": 255
+        },
+        "velocity_min": 40,
+        "velocity_max": 40
+    },
+    "TypeC": {
+        "size": {
+            "x": 30,
+            "y": 30
+        },
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 100
+        },
+        "velocity_min": 40,
+        "velocity_max": 40
     }
 }

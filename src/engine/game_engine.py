@@ -3,9 +3,11 @@ import pygame
 
 from src.cfg.enemy_settings import EnemySettings
 from src.create.prefab_create import crear_cuadrado
+from src.ecs.components.c_enemy_spawner import CEnemySpawner
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
+from src.ecs.systems.s_enemy_spawner import system_enemy_spawner
 from src.cfg.game_settings import GameSettings
 
 
@@ -34,8 +36,8 @@ class GameEngine:
         self._clean()
 
     def _create(self):
-        crear_cuadrado(self.ecs_world, pygame.Vector2(50, 50), pygame.Vector2(
-            100, 100), pygame.Vector2(100, 100), pygame.Color(0, 0, 255))
+        spawner_entity = self.ecs_world.create_entity()
+        self.ecs_world.add_component(spawner_entity, CEnemySpawner())
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
@@ -47,6 +49,7 @@ class GameEngine:
                 self.is_running = False
 
     def _update(self):
+        system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies.get_enemies())
         system_movement(self.ecs_world, self.delta_time)
         system_screen_bounce(self.ecs_world, self.screen)
 
