@@ -28,7 +28,6 @@ def crear_enemy(world: esper.World, enemy_type: str, position: pygame.Vector2, e
     speed = random.uniform(cfg["velocity_min"], cfg["velocity_max"])
     angle = random.uniform(0, 2 * math.pi)
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
-
     return crear_cuadrado(world, size, position, direction, color)
 
 
