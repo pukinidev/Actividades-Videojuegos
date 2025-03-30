@@ -3,7 +3,8 @@ import pygame
 
 from src.cfg.enemy_settings import EnemySettings
 from src.cfg.level_settings import LevelSettings
-from src.create.prefab_create import create_spawner_entity
+from src.cfg.player_settings import PlayerSettings
+from src.create.prefab_create import create_spawner_entity, create_player_square
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
@@ -17,6 +18,7 @@ class GameEngine:
         self.config = GameSettings()
         self.enemies = EnemySettings()
         self.level = LevelSettings()
+        self.player = PlayerSettings()
         self.screen = pygame.display.set_mode(self.config.get_window_size(), pygame.SCALED)
         self.title = pygame.display.set_caption(self.config.get_window_title())
         self.clock = pygame.time.Clock()
@@ -37,6 +39,7 @@ class GameEngine:
         self._clean()
 
     def _create(self):
+        create_player_square(self.ecs_world, self.player.get_player(), self.level.get_spawn_player())
         create_spawner_entity(self.ecs_world, self.level.get_spawn_events())
 
     def _calculate_time(self):

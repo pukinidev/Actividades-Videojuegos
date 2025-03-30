@@ -1,7 +1,7 @@
 import esper
 import pygame
 
-from src.create.prefab_create import create_enemy_entity
+from src.create.prefab_create import create_enemy_square
 from src.ecs.components.c_enemy_spawner import CEnemySpawner
 
 
@@ -15,5 +15,5 @@ def system_enemy_spawner(world: esper.World, delta_time: float, enemies_config: 
             if not c_e.spawned_flags[i] and c_e.time_accumulator >= event["time"]:
                 c_e.spawned_flags[i] = True  
                 position = pygame.Vector2(event["position"]["x"], event["position"]["y"])
-                create_enemy_entity(world, event["enemy_type"], position, enemies_config)
+                create_enemy_square(world, event["enemy_type"], position, enemies_config)
                 print(f"[SPAWN] {event["enemy_type"]} at t={c_e.time_accumulator:.2f}s pos={position}")
