@@ -10,3 +10,5 @@ class PlayerSettings:
 
     def get_player(self) -> dict:
         return self.player_config
+    
+    

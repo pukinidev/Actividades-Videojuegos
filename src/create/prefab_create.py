@@ -37,14 +37,14 @@ def create_enemy_square(world: esper.World, enemy_type: str, position: pygame.Ve
     angle = random.uniform(0, 2 * math.pi)
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
     enemy_entity = create_square(world, settings["size"], position, direction, settings["color"])
-    world.add_component(enemy_entity, CTagEnemy)
+    world.add_component(enemy_entity, CTagEnemy())
 
 def create_player_square(world: esper.World, player_config:dict, player_lvl_config:dict) -> int:
     settings = get_entity_config(player_config)
     pos = pygame.Vector2(player_lvl_config["position"]["x"] - settings["size"].x / 2, player_lvl_config["position"]["y"] - settings["size"].y / 2)
     vel = pygame.Vector2(0, 0)
     player_entity = create_square(world, settings["size"], pos, vel, settings["color"])
-    world.add_component(player_entity, CTagPlayer)
+    world.add_component(player_entity, CTagPlayer())
     return player_entity
     
 def create_spawner_entity(world: esper.World, spawn_events: dict) -> int:
@@ -54,7 +54,20 @@ def create_spawner_entity(world: esper.World, spawn_events: dict) -> int:
 
 def create_input_player(world: esper.World) -> int:
     input_left = world.create_entity()
+    input_right = world.create_entity()
+    input_up = world.create_entity()
+    input_down = world.create_entity()
     world.add_component(input_left, CInputCommand(
         "PLAYER_LEFT", pygame.K_LEFT
     ))
+    world.add_component(input_right, CInputCommand(
+        "PLAYER_RIGHT", pygame.K_RIGHT
+    ))
+    world.add_component(input_up, CInputCommand(
+        "PLAYER_UP", pygame.K_UP
+    ))
+    world.add_component(input_down, CInputCommand(
+        "PLAYER_DOWN", pygame.K_DOWN
+    ))
+    
     

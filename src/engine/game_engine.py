@@ -5,7 +5,7 @@ from src.cfg.enemy_settings import EnemySettings
 from src.cfg.level_settings import LevelSettings
 from src.cfg.player_settings import PlayerSettings
 from src.create.prefab_create import create_input_player, create_spawner_entity, create_player_square
-from src.ecs.components.c_input_command import CInputCommand
+from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_velocity import CVelocity
 from src.ecs.systems.s_input_player import system_player_input
 from src.ecs.systems.s_movement import system_movement
@@ -71,5 +71,26 @@ class GameEngine:
         pygame.quit()
         
     def _do_action(self, c_input:CInputCommand):
-        print(f"{c_input.name} {c_input.phase}")
+        if c_input.name == "PLAYER_LEFT":
+            if c_input.phase == CommandPhase.START:
+                self.player_c_v.vel.x -= self.player.get_player()["input_velocity"]
+            elif c_input.phase == CommandPhase.END:
+                self.player_c_v.vel.x += self.player.get_player()["input_velocity"]
+        if c_input.name == "PLAYER_RIGHT":
+            if c_input.phase == CommandPhase.START:
+                self.player_c_v.vel.x += self.player.get_player()["input_velocity"]
+            elif c_input.phase == CommandPhase.END:
+                self.player_c_v.vel.x -= self.player.get_player()["input_velocity"]
+                
+        if c_input.name == "PLAYER_UP":
+            if c_input.phase == CommandPhase.START:
+                self.player_c_v.vel.y -= self.player.get_player()["input_velocity"]
+            elif c_input.phase == CommandPhase.END:
+                self.player_c_v.vel.y += self.player.get_player()["input_velocity"]
+                
+        if c_input.name == "PLAYER_DOWN":
+            if c_input.phase == CommandPhase.START:
+                self.player_c_v.vel.y += self.player.get_player()["input_velocity"]
+            elif c_input.phase == CommandPhase.END:
+                self.player_c_v.vel.y -= self.player.get_player()["input_velocity"]
         
