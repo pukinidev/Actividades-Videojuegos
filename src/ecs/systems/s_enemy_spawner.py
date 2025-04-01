@@ -6,10 +6,10 @@ from src.ecs.components.c_enemy_spawner import CEnemySpawner
 
 
 def system_enemy_spawner(world: esper.World, delta_time: float, enemies_config: dict):
-    components = world.get_components(CEnemySpawner)
+    components = world.get_component(CEnemySpawner)
     c_e: CEnemySpawner
     
-    for entity, (c_e,) in components:
+    for _, c_e in components:
         c_e.time_accumulator += delta_time
         for i, event in enumerate(c_e.spawn_events):
             if not c_e.spawned_flags[i] and c_e.time_accumulator >= event["time"]:
