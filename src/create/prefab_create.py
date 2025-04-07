@@ -8,6 +8,7 @@ from src.ecs.components.c_input_command import CInputCommand
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.c_velocity import CVelocity
+from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
 from src.ecs.components.tags.c_tag_player import CTagPlayer
 
@@ -57,6 +58,7 @@ def create_input_player(world: esper.World) -> int:
     input_right = world.create_entity()
     input_up = world.create_entity()
     input_down = world.create_entity()
+    input_fire = world.create_entity()
     world.add_component(input_left, CInputCommand(
         "PLAYER_LEFT", pygame.K_LEFT
     ))
@@ -69,5 +71,14 @@ def create_input_player(world: esper.World) -> int:
     world.add_component(input_down, CInputCommand(
         "PLAYER_DOWN", pygame.K_DOWN
     ))
+    world.add_component(input_fire, CInputCommand(
+        "PLAYER_FIRE", pygame.BUTTON_LEFT
+    ))
     
-    
+def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pygame.Vector2, player_size: pygame.Vector2, bullet_config: dict) -> int:
+    settings = get_entity_config(bullet_config)
+    pos = pygame.Vector2(player_pos.x + player_size[0] / 2, player_pos.y + player_size[1] / 2)
+    vel = (mouse_pos - player_pos)
+    vel = vel.normalize() * bullet_config["velocity"]
+    bullet_entity = create_square(world, settings["size"], pos, vel, settings["color"])
+    world.add_component(bullet_entity, CTagBullet())

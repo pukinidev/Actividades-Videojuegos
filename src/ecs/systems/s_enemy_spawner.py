@@ -16,4 +16,3 @@ def system_enemy_spawner(world: esper.World, delta_time: float, enemies_config: 
                 c_e.spawned_flags[i] = True  
                 position = pygame.Vector2(event["position"]["x"], event["position"]["y"])
                 create_enemy_square(world, event["enemy_type"], position, enemies_config)
-                print(f"[SPAWN] {event["enemy_type"]} at t={c_e.time_accumulator:.2f}s pos={position}")
