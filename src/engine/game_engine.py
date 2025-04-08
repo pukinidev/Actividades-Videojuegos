@@ -81,7 +81,7 @@ class GameEngine:
         system_collision_player_enemy(self.ecs_world, self.player_entity, self.level["player_spawn"])
         self.ecs_world._clear_dead_entities()
         self.num_bullets = len(self.ecs_world.get_component(CTagBullet))
-        print(f"Number of bullets: {self.num_bullets}")
+        
         
 
     def _draw(self):
