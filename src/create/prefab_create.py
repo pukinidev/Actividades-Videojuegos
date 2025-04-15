@@ -3,6 +3,7 @@ import random
 import esper
 import pygame
 
+from src.ecs.components.c_animation import CAnimation
 from src.ecs.components.c_enemy_spawner import CEnemySpawner
 from src.ecs.components.c_input_command import CInputCommand
 from src.ecs.components.c_surface import CSurface
@@ -53,11 +54,15 @@ def create_enemy_square(world: esper.World, enemy_type: str, position: pygame.Ve
     world.add_component(enemy_entity, CTagEnemy())
 
 def create_player_square(world: esper.World, player_config:dict, player_lvl_config:dict) -> int:
-    settings = get_entity_config(player_config)
-    pos = pygame.Vector2(player_lvl_config["position"]["x"] - settings["size"].x / 2, player_lvl_config["position"]["y"] - settings["size"].y / 2)
+    player_sprite = pygame.image.load(player_config["image"]).convert_alpha()
+    size = player_sprite.get_size()
+    pos = pygame.Vector2(player_lvl_config["position"]["x"] - size[0] / 2, player_lvl_config["position"]["y"] - size[1] / 2)
     vel = pygame.Vector2(0, 0)
-    player_entity = create_square(world, settings["size"], pos, vel, settings["color"])
+    player_entity = create_sprite(world, pos, vel, player_sprite)
     world.add_component(player_entity, CTagPlayer())
+    world.add_component(player_entity, CAnimation(
+        player_config["animations"]
+    ))
     return player_entity
     
 def create_spawner_entity(world: esper.World, spawn_events: dict) -> int:
