@@ -13,11 +13,6 @@ from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
 from src.ecs.components.tags.c_tag_player import CTagPlayer
 
-def get_entity_config(config: dict) -> dict:
-    return {
-        "size": pygame.Vector2(config["size"]["x"], config["size"]["y"]),
-        "color": pygame.Color(config["color"]["r"], config["color"]["g"], config["color"]["b"]),
-    }
 
 def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2, vel: pygame.Vector2, col: pygame.Color) -> int:
     cuad_entity = world.create_entity()
