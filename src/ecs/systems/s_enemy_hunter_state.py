@@ -26,7 +26,6 @@ def _do_enemy_hunter_idle(c_st: CEnemyHunterState, c_a: CAnimation, c_t: CTransf
     set_animation(c_a, "IDLE")
     c_v.vel.x = 0
     c_v.vel.y = 0
-    print(f"Idle state: {c_t.pos}, {pl_t.pos}")
     dist_to_player = c_t.pos.distance_to(pl_t.pos)
     if dist_to_player < hunter_info["distance_start_chase"]:
         c_st.state = HunterState.CHASE
