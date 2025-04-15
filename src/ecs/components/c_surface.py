@@ -6,5 +6,9 @@ class CSurface:
         self.surf = pygame.Surface(size)
         self.surf.fill(color)
         
+    @classmethod
+    def from_surface(cls, surface: pygame.Surface) -> None:
+        c_surf = cls(pygame.Vector2(0, 0), pygame.Color(0, 0, 0))
+        c_surf.surf = surface
+        return c_surf
     
-        

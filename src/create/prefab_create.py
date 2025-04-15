@@ -30,14 +30,26 @@ def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2,
         vel=vel
     ))
     return cuad_entity
+
+def create_sprite(world: esper.World, pos: pygame.Vector2, vel: pygame.Vector2, surface: pygame.Surface) -> int:
+    sprite_entity = world.create_entity()
+    world.add_component(sprite_entity, CTransform(
+        pos=pos
+    ))
+    world.add_component(sprite_entity, CVelocity(
+        vel=vel
+    ))
+    world.add_component(sprite_entity, CSurface.from_surface(surface = surface))
+    return sprite_entity
+    
     
 def create_enemy_square(world: esper.World, enemy_type: str, position: pygame.Vector2, enemies_config: dict) -> int:
     cfg = enemies_config[enemy_type]
-    settings = get_entity_config(cfg)
+    enemy_surface = pygame.image.load(cfg["image"]).convert_alpha()
     speed = random.uniform(cfg["velocity_min"], cfg["velocity_max"])
     angle = random.uniform(0, 2 * math.pi)
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
-    enemy_entity = create_square(world, settings["size"], position, direction, settings["color"])
+    enemy_entity = create_sprite(world, position, direction, enemy_surface)
     world.add_component(enemy_entity, CTagEnemy())
 
 def create_player_square(world: esper.World, player_config:dict, player_lvl_config:dict) -> int:
@@ -76,9 +88,9 @@ def create_input_player(world: esper.World) -> int:
     ))
     
 def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pygame.Vector2, player_size: pygame.Vector2, bullet_config: dict) -> int:
-    settings = get_entity_config(bullet_config)
+    bullet_surface = pygame.image.load(bullet_config["image"]).convert_alpha()
     pos = pygame.Vector2(player_pos.x + player_size[0] / 2, player_pos.y + player_size[1] / 2)
     vel = (mouse_pos - player_pos)
     vel = vel.normalize() * bullet_config["velocity"]
-    bullet_entity = create_square(world, settings["size"], pos, vel, settings["color"])
+    bullet_entity = create_sprite(world, pos, vel, bullet_surface)
     world.add_component(bullet_entity, CTagBullet())
