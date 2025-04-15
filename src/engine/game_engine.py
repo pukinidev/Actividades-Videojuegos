@@ -13,6 +13,7 @@ from src.ecs.systems.s_collision_enemy_bullet import system_collision_enemy_bull
 from src.ecs.systems.s_collision_player_enemy import system_collision_player_enemy
 from src.ecs.systems.s_input_player import system_player_input
 from src.ecs.systems.s_movement import system_movement
+from src.ecs.systems.s_player_state import system_player_state
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
 from src.ecs.systems.s_enemy_spawner import system_enemy_spawner
@@ -75,6 +76,9 @@ class GameEngine:
     def _update(self):
         system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies)
         system_movement(self.ecs_world, self.delta_time)
+        
+        system_player_state(self.ecs_world)
+        
         system_screen_bounce(self.ecs_world, self.screen)
         system_screen_player(self.ecs_world, self.screen)
         system_screen_bullet(self.ecs_world, self.screen)
