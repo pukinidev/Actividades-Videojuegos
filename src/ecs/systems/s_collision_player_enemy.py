@@ -1,13 +1,15 @@
 import esper
 
+from src.create.prefab_create import create_explosion
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
 
-def system_collision_player_enemy(world: esper.World, player_entity: int, player_spawn: dict) -> None:
+def system_collision_player_enemy(world: esper.World, player_entity: int, player_spawn: dict, explosion_config: dict):
     components = world.get_components(CSurface, CTransform, CTagEnemy)
     pl_t = world.component_for_entity(player_entity, CTransform)
     pl_s = world.component_for_entity(player_entity, CSurface)
+    
     
     pl_rect = CSurface.get_area_relative(pl_s.area, pl_t.pos)
     
@@ -15,5 +17,7 @@ def system_collision_player_enemy(world: esper.World, player_entity: int, player
         ene_rect = CSurface.get_area_relative(c_s.area, c_t.pos)
         if ene_rect.colliderect(pl_rect):
             world.delete_entity(enemy_entity)
-            pl_t.pos.x = player_spawn['position']['x'] - pl_s.surf.get_width() / 2
-            pl_t.pos.y = player_spawn['position']['y'] - pl_s.surf.get_height() / 2
+            pl_t.pos.x = player_spawn['position']['x'] - pl_rect.width / 2
+            pl_t.pos.y = player_spawn['position']['y'] - pl_rect.height / 2
+
+            create_explosion(world, c_t.pos, explosion_config)

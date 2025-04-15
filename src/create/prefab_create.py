@@ -12,6 +12,7 @@ from src.ecs.components.c_transform import CTransform
 from src.ecs.components.c_velocity import CVelocity
 from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
+from src.ecs.components.tags.c_tag_explosion import CTagExplosion
 from src.ecs.components.tags.c_tag_player import CTagPlayer
 
 
@@ -40,14 +41,22 @@ def create_sprite(world: esper.World, pos: pygame.Vector2, vel: pygame.Vector2, 
     return sprite_entity
     
     
-def create_enemy_square(world: esper.World, enemy_type: str, position: pygame.Vector2, enemies_config: dict) -> int:
-    cfg = enemies_config[enemy_type]
-    enemy_surface = pygame.image.load(cfg["image"]).convert_alpha()
-    speed = random.uniform(cfg["velocity_min"], cfg["velocity_max"])
+def create_enemy_square(world: esper.World, position: pygame.Vector2, enemies_config: dict) -> int:
+    enemy_surface = pygame.image.load(enemies_config["image"]).convert_alpha()
+    speed = random.uniform(enemies_config["velocity_min"], enemies_config["velocity_max"])
     angle = random.uniform(0, 2 * math.pi)
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
     enemy_entity = create_sprite(world, position, direction, enemy_surface)
-    world.add_component(enemy_entity, CTagEnemy())
+    world.add_component(enemy_entity, CTagEnemy("Normal"))
+    
+def create_enemy_hunter(world: esper.World, position: pygame.Vector2, hunter_config: dict) -> int:
+    enemy_surface = pygame.image.load(hunter_config["image"]).convert_alpha()
+    enemy_entity = create_sprite(world, position, pygame.Vector2(0, 0), enemy_surface)
+    world.add_component(enemy_entity, CAnimation(
+        hunter_config["animations"]
+    ))
+    world.add_component(enemy_entity, CTagEnemy("Hunter"))
+
 
 def create_player_square(world: esper.World, player_config:dict, player_lvl_config:dict) -> int:
     player_sprite = pygame.image.load(player_config["image"]).convert_alpha()
@@ -98,3 +107,12 @@ def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pyg
     vel = vel.normalize() * bullet_config["velocity"]
     bullet_entity = create_sprite(world, pos, vel, bullet_surface)
     world.add_component(bullet_entity, CTagBullet())
+    
+def create_explosion(world: esper.World, position: pygame.Vector2, explosion_config: dict) -> int:
+    explosion_surface = pygame.image.load(explosion_config["image"]).convert_alpha()
+    explosion_entity = create_sprite(world, position, pygame.Vector2(0, 0), explosion_surface)
+    world.add_component(explosion_entity, CTagExplosion())
+    world.add_component(explosion_entity, CAnimation(
+        explosion_config["animations"]
+    ))
+    return explosion_entity

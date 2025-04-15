@@ -2,7 +2,7 @@ import esper
 import pygame
 
 from src.cfg.load_settings import ConfigLoader
-from src.create.prefab_create import create_bullet, create_input_player, create_spawner_entity, create_player_square
+from src.create.prefab_create import create_bullet, create_explosion, create_input_player, create_spawner_entity, create_player_square
 from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
@@ -11,6 +11,7 @@ from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.systems.s_animation import system_animation
 from src.ecs.systems.s_collision_enemy_bullet import system_collision_enemy_bullet
 from src.ecs.systems.s_collision_player_enemy import system_collision_player_enemy
+from src.ecs.systems.s_explosion import system_explosion
 from src.ecs.systems.s_input_player import system_player_input
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_player_state import system_player_state
@@ -63,6 +64,8 @@ class GameEngine:
             self.player_entity, CSurface)
         create_spawner_entity(self.ecs_world, self.level["enemy_spawn_events"])
         create_input_player(self.ecs_world)
+        
+            
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
@@ -83,10 +86,12 @@ class GameEngine:
         system_screen_bounce(self.ecs_world, self.screen)
         system_screen_player(self.ecs_world, self.screen)
         system_screen_bullet(self.ecs_world, self.screen)
-        system_collision_enemy_bullet(self.ecs_world)
-        system_collision_player_enemy(self.ecs_world, self.player_entity, self.level["player_spawn"])
+        system_collision_enemy_bullet(self.ecs_world, self.explosion)
+        system_collision_player_enemy(self.ecs_world, self.player_entity, self.level["player_spawn"], self.explosion)
         
+        system_explosion(self.ecs_world)
         system_animation(self.ecs_world, self.delta_time)
+        
         
         self.ecs_world._clear_dead_entities()
         self.num_bullets = len(self.ecs_world.get_component(CTagBullet))

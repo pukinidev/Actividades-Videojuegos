@@ -1,11 +1,12 @@
 import esper
 
+from src.create.prefab_create import create_explosion
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
 
-def system_collision_enemy_bullet(world: esper.World) -> None:
+def system_collision_enemy_bullet(world: esper.World, explosion_config: dict):
     component_enemy = world.get_components(CSurface, CTransform, CTagEnemy)
     components_bullet = world.get_components(CSurface, CTransform, CTagBullet)
     for enemy_entity, (c_s, c_t, _) in component_enemy:
@@ -15,5 +16,6 @@ def system_collision_enemy_bullet(world: esper.World) -> None:
             if ene_rect.colliderect(bul_rect):
                 world.delete_entity(enemy_entity)
                 world.delete_entity(bullet_entity)
+                create_explosion(world, c_t.pos, explosion_config)
                 
     
