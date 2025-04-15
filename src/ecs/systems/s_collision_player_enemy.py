@@ -19,5 +19,4 @@ def system_collision_player_enemy(world: esper.World, player_entity: int, player
             world.delete_entity(enemy_entity)
             pl_t.pos.x = player_spawn['position']['x'] - pl_rect.width / 2
             pl_t.pos.y = player_spawn['position']['y'] - pl_rect.height / 2
-
             create_explosion(world, c_t.pos, explosion_config)

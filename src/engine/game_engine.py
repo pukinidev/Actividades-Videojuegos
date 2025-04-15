@@ -89,9 +89,9 @@ class GameEngine:
         system_collision_enemy_bullet(self.ecs_world, self.explosion)
         system_collision_player_enemy(self.ecs_world, self.player_entity, self.level["player_spawn"], self.explosion)
         
-        system_explosion(self.ecs_world)
-        system_animation(self.ecs_world, self.delta_time)
         
+        system_animation(self.ecs_world, self.delta_time)
+        system_explosion(self.ecs_world)
         
         self.ecs_world._clear_dead_entities()
         self.num_bullets = len(self.ecs_world.get_component(CTagBullet))

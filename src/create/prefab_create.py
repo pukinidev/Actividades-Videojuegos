@@ -14,6 +14,7 @@ from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
 from src.ecs.components.tags.c_tag_explosion import CTagExplosion
 from src.ecs.components.tags.c_tag_player import CTagPlayer
+from src.ecs.components.c_enemy_hunter_state import CEnemyHunterState
 
 
 def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2, vel: pygame.Vector2, col: pygame.Color) -> int:
@@ -52,6 +53,9 @@ def create_enemy_square(world: esper.World, position: pygame.Vector2, enemies_co
 def create_enemy_hunter(world: esper.World, position: pygame.Vector2, hunter_config: dict) -> int:
     enemy_surface = pygame.image.load(hunter_config["image"]).convert_alpha()
     enemy_entity = create_sprite(world, position, pygame.Vector2(0, 0), enemy_surface)
+    world.add_component(enemy_entity, CEnemyHunterState(
+        start_pos=position
+    ))
     world.add_component(enemy_entity, CAnimation(
         hunter_config["animations"]
     ))
