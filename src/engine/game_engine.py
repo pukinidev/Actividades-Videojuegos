@@ -8,6 +8,7 @@ from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.c_velocity import CVelocity
 from src.ecs.components.tags.c_tag_bullet import CTagBullet
+from src.ecs.systems.s_animation import system_animation
 from src.ecs.systems.s_collision_enemy_bullet import system_collision_enemy_bullet
 from src.ecs.systems.s_collision_player_enemy import system_collision_player_enemy
 from src.ecs.systems.s_input_player import system_player_input
@@ -79,6 +80,9 @@ class GameEngine:
         system_screen_bullet(self.ecs_world, self.screen)
         system_collision_enemy_bullet(self.ecs_world)
         system_collision_player_enemy(self.ecs_world, self.player_entity, self.level["player_spawn"])
+        
+        system_animation(self.ecs_world, self.delta_time)
+        
         self.ecs_world._clear_dead_entities()
         self.num_bullets = len(self.ecs_world.get_component(CTagBullet))
         
@@ -129,6 +133,6 @@ class GameEngine:
                 self.ecs_world,
                 c_input.mouse_pos,
                 self.player_c_t.pos,
-                self.player_c_s.surf.get_size(),
+                self.player_c_s.area.size,
                 self.bullet
             )
