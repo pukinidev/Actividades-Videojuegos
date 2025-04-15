@@ -27,3 +27,14 @@ class AnimationData:
         self.end = end
         self.framerate = 1.0 / framerate
         
+
+def set_animation(c_a: CAnimation, anim_name: str):
+    for i, anim in enumerate(c_a.animations_list):
+        if anim.name == anim_name:
+            if c_a.curr_anim == i:
+                return
+            
+            c_a.curr_anim = i
+            c_a.curr_anim_time = 0
+            c_a.curr_frame = c_a.animations_list[i].start
+            return

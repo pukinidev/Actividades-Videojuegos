@@ -11,6 +11,7 @@ from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.systems.s_animation import system_animation
 from src.ecs.systems.s_collision_enemy_bullet import system_collision_enemy_bullet
 from src.ecs.systems.s_collision_player_enemy import system_collision_player_enemy
+from src.ecs.systems.s_enemy_hunter_state import system_enemy_hunter_state
 from src.ecs.systems.s_explosion import system_explosion
 from src.ecs.systems.s_input_player import system_player_input
 from src.ecs.systems.s_movement import system_movement
@@ -65,6 +66,7 @@ class GameEngine:
         create_spawner_entity(self.ecs_world, self.level["enemy_spawn_events"])
         create_input_player(self.ecs_world)
         
+        
             
 
     def _calculate_time(self):
@@ -82,6 +84,7 @@ class GameEngine:
         system_movement(self.ecs_world, self.delta_time)
         
         system_player_state(self.ecs_world)
+        system_enemy_hunter_state(self.ecs_world, self.player_entity, self.enemies["Hunter"])
         
         system_screen_bounce(self.ecs_world, self.screen)
         system_screen_player(self.ecs_world, self.screen)

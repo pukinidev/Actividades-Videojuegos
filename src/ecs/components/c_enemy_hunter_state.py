@@ -4,7 +4,7 @@ import pygame
 
 class CEnemyHunterState:
     def __init__(self, start_pos: pygame.Vector2) -> None:
-        self.state = "IDLE"
+        self.state = HunterState.IDLE
         self.start_pos = pygame.Vector2(start_pos.x, start_pos.y)
         
 class HunterState(Enum):
