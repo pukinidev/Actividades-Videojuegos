@@ -30,6 +30,7 @@ class GameEngine:
         self.level = self.loader.get_level_01_config()
         self.player = self.loader.get_player_config()
         self.bullet = self.loader.get_bullet_config()
+        self.explosion = self.loader.get_explosion_config()
         self.screen = pygame.display.set_mode((
             self.config["size"]["w"],
             self.config["size"]["h"]
