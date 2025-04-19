@@ -15,6 +15,7 @@ from src.ecs.components.tags.c_tag_bullet import CTagBullet
 from src.ecs.components.tags.c_tag_enemy import CTagEnemy
 from src.ecs.components.tags.c_tag_explosion import CTagExplosion
 from src.ecs.components.tags.c_tag_player import CTagPlayer
+from src.engine.service_locator import ServiceLocator
 
 
 
@@ -44,7 +45,7 @@ def create_sprite(world: esper.World, pos: pygame.Vector2, vel: pygame.Vector2, 
     
     
 def create_enemy_square(world: esper.World, position: pygame.Vector2, enemies_config: dict) -> int:
-    enemy_surface = pygame.image.load(enemies_config["image"]).convert_alpha()
+    enemy_surface = ServiceLocator.images_service.get(enemies_config["image"])
     speed = random.uniform(enemies_config["velocity_min"], enemies_config["velocity_max"])
     angle = random.uniform(0, 2 * math.pi)
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
@@ -52,7 +53,7 @@ def create_enemy_square(world: esper.World, position: pygame.Vector2, enemies_co
     world.add_component(enemy_entity, CTagEnemy("Normal"))
     
 def create_enemy_hunter(world: esper.World, position: pygame.Vector2, hunter_config: dict) -> int:
-    enemy_surface = pygame.image.load(hunter_config["image"]).convert_alpha()
+    enemy_surface = ServiceLocator.images_service.get(hunter_config["image"])
     enemy_entity = create_sprite(world, position, pygame.Vector2(0, 0), enemy_surface)
     world.add_component(enemy_entity, CEnemyHunterState(
         start_pos=position
@@ -64,7 +65,7 @@ def create_enemy_hunter(world: esper.World, position: pygame.Vector2, hunter_con
 
 
 def create_player_square(world: esper.World, player_config:dict, player_lvl_config:dict) -> int:
-    player_sprite = pygame.image.load(player_config["image"]).convert_alpha()
+    player_sprite = ServiceLocator.images_service.get(player_config["image"])
     size = player_sprite.get_size()
     size = (size[0] / player_config["animations"]["number_frames"], size[1])
     pos = pygame.Vector2(player_lvl_config["position"]["x"] - size[0] / 2, player_lvl_config["position"]["y"] - size[1] / 2)
@@ -105,7 +106,7 @@ def create_input_player(world: esper.World) -> int:
     ))
     
 def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pygame.Vector2, player_size: pygame.Vector2, bullet_config: dict) -> int:
-    bullet_surface = pygame.image.load(bullet_config["image"]).convert_alpha()
+    bullet_surface = ServiceLocator.images_service.get(bullet_config["image"])
     bullet_size = bullet_surface.get_rect().size
     pos = pygame.Vector2(player_pos.x + (player_size[0] / 2) - (bullet_size[0] / 2), player_pos.y + (player_size[1] / 2) - (bullet_size[1] / 2))
     vel = (mouse_pos - player_pos)
@@ -114,7 +115,7 @@ def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pyg
     world.add_component(bullet_entity, CTagBullet())
     
 def create_explosion(world: esper.World, position: pygame.Vector2, explosion_config: dict) -> int:
-    explosion_surface = pygame.image.load(explosion_config["image"]).convert_alpha()
+    explosion_surface = ServiceLocator.images_service.get(explosion_config["image"])
     explosion_entity = create_sprite(world, position, pygame.Vector2(0, 0), explosion_surface)
     world.add_component(explosion_entity, CTagExplosion())
     world.add_component(explosion_entity, CAnimation(
