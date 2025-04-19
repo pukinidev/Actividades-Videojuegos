@@ -11,3 +11,4 @@ Cada rama corresponde a una actividad específica, ya sea un taller base o una e
 * `actividad-2-extensión` – Extensión de la Actividad 2
 * `actividad-3-taller` – Taller base de la Actividad 3
 * `actividad-3-extensión` – Extensión de la Actividad 3
+* `actividad-4-taller` – Taller base de la Actividad 4
