@@ -2,7 +2,7 @@ import esper
 import pygame
 
 from src.cfg.load_settings import ConfigLoader
-from src.create.prefab_create import create_bullet, create_explosion, create_input_player, create_spawner_entity, create_player_square
+from src.create.prefab_create import create_bullet, create_explosion, create_input_player, create_spawner_entity, create_player_square, create_text
 from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
@@ -33,6 +33,7 @@ class GameEngine:
         self.player = self.loader.get_player_config()
         self.bullet = self.loader.get_bullet_config()
         self.explosion = self.loader.get_explosion_config()
+        self.interface = self.loader.get_interface_config()
         self.screen = pygame.display.set_mode((
             self.config["size"]["w"],
             self.config["size"]["h"]
@@ -65,9 +66,7 @@ class GameEngine:
             self.player_entity, CSurface)
         create_spawner_entity(self.ecs_world, self.level["enemy_spawn_events"])
         create_input_player(self.ecs_world)
-        
-        
-            
+        create_text(self.ecs_world,self.interface,"START")
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
@@ -78,28 +77,27 @@ class GameEngine:
             system_player_input(self.ecs_world, event, self._do_action)
             if event.type == pygame.QUIT:
                 self.is_running = False
-
+                
     def _update(self):
         system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies)
         system_movement(self.ecs_world, self.delta_time)
-        
+
         system_player_state(self.ecs_world)
-        system_enemy_hunter_state(self.ecs_world, self.player_entity, self.enemies["Hunter"])
-        
+        system_enemy_hunter_state(
+            self.ecs_world, self.player_entity, self.enemies["Hunter"])
+
         system_screen_bounce(self.ecs_world, self.screen)
         system_screen_player(self.ecs_world, self.screen)
         system_screen_bullet(self.ecs_world, self.screen)
         system_collision_enemy_bullet(self.ecs_world, self.explosion)
-        system_collision_player_enemy(self.ecs_world, self.player_entity, self.level["player_spawn"], self.explosion)
-        
-        
+        system_collision_player_enemy(
+            self.ecs_world, self.player_entity, self.level["player_spawn"], self.explosion)
+
         system_animation(self.ecs_world, self.delta_time)
         system_explosion(self.ecs_world)
-        
+
         self.ecs_world._clear_dead_entities()
         self.num_bullets = len(self.ecs_world.get_component(CTagBullet))
-        
-        
 
     def _draw(self):
         self.screen.fill((

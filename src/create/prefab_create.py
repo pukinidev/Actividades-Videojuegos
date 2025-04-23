@@ -18,7 +18,6 @@ from src.ecs.components.tags.c_tag_player import CTagPlayer
 from src.engine.service_locator import ServiceLocator
 
 
-
 def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2, vel: pygame.Vector2, col: pygame.Color) -> int:
     cuad_entity = world.create_entity()
     world.add_component(cuad_entity, CSurface(
@@ -32,6 +31,15 @@ def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2,
     ))
     return cuad_entity
 
+
+def create_text_entity(world: esper.World, surface: pygame.font.Font, pos: pygame.Vector2) -> int:
+    text_entity = world.create_entity()
+    world.add_component(text_entity, CSurface.from_text(surface=surface))
+    world.add_component(text_entity, CTransform(
+        pos=pos
+    ))
+    return text_entity
+
 def create_sprite(world: esper.World, pos: pygame.Vector2, vel: pygame.Vector2, surface: pygame.Surface) -> int:
     sprite_entity = world.create_entity()
     world.add_component(sprite_entity, CTransform(
@@ -40,22 +48,25 @@ def create_sprite(world: esper.World, pos: pygame.Vector2, vel: pygame.Vector2, 
     world.add_component(sprite_entity, CVelocity(
         vel=vel
     ))
-    world.add_component(sprite_entity, CSurface.from_surface(surface = surface))
+    world.add_component(sprite_entity, CSurface.from_surface(surface=surface))
     return sprite_entity
-    
-    
+
+
 def create_enemy_square(world: esper.World, position: pygame.Vector2, enemies_config: dict) -> int:
     enemy_surface = ServiceLocator.images_service.get(enemies_config["image"])
-    speed = random.uniform(enemies_config["velocity_min"], enemies_config["velocity_max"])
+    speed = random.uniform(
+        enemies_config["velocity_min"], enemies_config["velocity_max"])
     angle = random.uniform(0, 2 * math.pi)
     direction = pygame.Vector2(math.cos(angle), math.sin(angle)) * speed
     enemy_entity = create_sprite(world, position, direction, enemy_surface)
     world.add_component(enemy_entity, CTagEnemy("Normal"))
     ServiceLocator.sound_service.play(enemies_config["sound"])
-    
+
+
 def create_enemy_hunter(world: esper.World, position: pygame.Vector2, hunter_config: dict) -> int:
     enemy_surface = ServiceLocator.images_service.get(hunter_config["image"])
-    enemy_entity = create_sprite(world, position, pygame.Vector2(0, 0), enemy_surface)
+    enemy_entity = create_sprite(
+        world, position, pygame.Vector2(0, 0), enemy_surface)
     world.add_component(enemy_entity, CEnemyHunterState(
         start_pos=position
     ))
@@ -63,14 +74,14 @@ def create_enemy_hunter(world: esper.World, position: pygame.Vector2, hunter_con
         hunter_config["animations"]
     ))
     world.add_component(enemy_entity, CTagEnemy("Hunter"))
-    
 
 
-def create_player_square(world: esper.World, player_config:dict, player_lvl_config:dict) -> int:
+def create_player_square(world: esper.World, player_config: dict, player_lvl_config: dict) -> int:
     player_sprite = ServiceLocator.images_service.get(player_config["image"])
     size = player_sprite.get_size()
     size = (size[0] / player_config["animations"]["number_frames"], size[1])
-    pos = pygame.Vector2(player_lvl_config["position"]["x"] - size[0] / 2, player_lvl_config["position"]["y"] - size[1] / 2)
+    pos = pygame.Vector2(player_lvl_config["position"]["x"] -
+                         size[0] / 2, player_lvl_config["position"]["y"] - size[1] / 2)
     vel = pygame.Vector2(0, 0)
     player_entity = create_sprite(world, pos, vel, player_sprite)
     world.add_component(player_entity, CTagPlayer())
@@ -79,11 +90,14 @@ def create_player_square(world: esper.World, player_config:dict, player_lvl_conf
     ))
     world.add_component(player_entity, CPlayerState())
     return player_entity
-    
+
+
 def create_spawner_entity(world: esper.World, spawn_events: dict) -> int:
     spawner_entity = world.create_entity()
-    world.add_component(spawner_entity, CEnemySpawner(spawn_events=spawn_events))
+    world.add_component(spawner_entity, CEnemySpawner(
+        spawn_events=spawn_events))
     return spawner_entity
+
 
 def create_input_player(world: esper.World) -> int:
     input_left = world.create_entity()
@@ -106,23 +120,51 @@ def create_input_player(world: esper.World) -> int:
     world.add_component(input_fire, CInputCommand(
         "PLAYER_FIRE", pygame.BUTTON_LEFT
     ))
-    
+
+
 def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pygame.Vector2, player_size: pygame.Vector2, bullet_config: dict) -> int:
     bullet_surface = ServiceLocator.images_service.get(bullet_config["image"])
     bullet_size = bullet_surface.get_rect().size
-    pos = pygame.Vector2(player_pos.x + (player_size[0] / 2) - (bullet_size[0] / 2), player_pos.y + (player_size[1] / 2) - (bullet_size[1] / 2))
+    pos = pygame.Vector2(player_pos.x + (player_size[0] / 2) - (
+        bullet_size[0] / 2), player_pos.y + (player_size[1] / 2) - (bullet_size[1] / 2))
     vel = (mouse_pos - player_pos)
     vel = vel.normalize() * bullet_config["velocity"]
     bullet_entity = create_sprite(world, pos, vel, bullet_surface)
     world.add_component(bullet_entity, CTagBullet())
     ServiceLocator.sound_service.play(bullet_config["sound"])
-    
+
+
 def create_explosion(world: esper.World, position: pygame.Vector2, explosion_config: dict) -> int:
-    explosion_surface = ServiceLocator.images_service.get(explosion_config["image"])
-    explosion_entity = create_sprite(world, position, pygame.Vector2(0, 0), explosion_surface)
+    explosion_surface = ServiceLocator.images_service.get(
+        explosion_config["image"])
+    explosion_entity = create_sprite(
+        world, position, pygame.Vector2(0, 0), explosion_surface)
     world.add_component(explosion_entity, CTagExplosion())
     world.add_component(explosion_entity, CAnimation(
         explosion_config["animations"]
     ))
     ServiceLocator.sound_service.play(explosion_config["sound"])
     return explosion_entity
+
+def create_text(world: esper.World, interface_config: dict, name: str) -> int:
+    text_surface = ServiceLocator.text_service.load_font(
+        path=interface_config["font"],
+        size=interface_config["font_size"])
+
+    text_surface = text_surface.render(
+        interface_config["texts"][name]["text"],
+        True,
+        pygame.Color(interface_config["texts"][name]["color"]["r"],
+                     interface_config["texts"][name]["color"]["g"],
+                     interface_config["texts"][name]["color"]["b"])
+    )
+        
+    text_pos = pygame.Vector2(interface_config["texts"][name]["position"]["x"],
+                               interface_config["texts"][name]["position"]["y"])
+    
+    text_entity = create_text_entity(
+        world=world,
+        surface=text_surface,
+        pos=text_pos
+    )
+    return text_entity
