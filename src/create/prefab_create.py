@@ -160,6 +160,5 @@ def create_text(world: esper.World, interface_config: dict, name: str) -> int:
     text_pos = pygame.Vector2(interface_config["texts"][name]["position"]["x"],
                               interface_config["texts"][name]["position"]["y"])
 
-    text_entity = create_text_entity(
-        world, font, interface_config, name, text_pos)
+    text_entity = create_text_entity(world, font, interface_config, name, text_pos)
     return text_entity
