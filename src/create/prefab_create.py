@@ -162,3 +162,11 @@ def create_static_text(world: esper.World, interface_config: dict, name: str) ->
 
     text_entity = create_text_entity(world, font, interface_config, name, text_pos)
     return text_entity
+
+
+def create_dynamic_text(world: esper.World, font: pygame.font.Font, text_config: dict, name: str) -> int:
+    text_pos = pygame.Vector2(text_config["position"]["x"],
+                              text_config["position"]["y"])
+    text_entity = create_text_entity(world, font, text_config, name, text_pos)
+    return text_entity
+    
