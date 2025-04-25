@@ -2,7 +2,7 @@ import esper
 import pygame
 
 from src.cfg.load_settings import ConfigLoader
-from src.create.prefab_create import create_bullet, create_explosion, create_input_player, create_spawner_entity, create_player_square, create_text
+from src.create.prefab_create import create_bullet, create_explosion, create_input_player, create_spawner_entity, create_player_square, create_static_text, create_text
 from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
@@ -66,7 +66,7 @@ class GameEngine:
             self.player_entity, CSurface)
         create_spawner_entity(self.ecs_world, self.level["enemy_spawn_events"])
         create_input_player(self.ecs_world)
-        create_text(self.ecs_world,self.interface,"START")
+        create_static_text(self.ecs_world,self.interface,"START")
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
