@@ -32,13 +32,17 @@ def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2,
     return cuad_entity
 
 
-def create_text_entity(world: esper.World, surface: pygame.font.Font, pos: pygame.Vector2) -> int:
+def create_text_entity(world: esper.World, font: pygame.font.Font, interface_config: dict, name: str, text_pos: pygame.Vector2) -> int:
     text_entity = world.create_entity()
-    world.add_component(text_entity, CSurface.from_text(surface=surface))
+    world.add_component(text_entity, CSurface.from_text(
+        font=font,
+        config=interface_config["texts"][name]
+    ))
     world.add_component(text_entity, CTransform(
-        pos=pos
+        pos=text_pos
     ))
     return text_entity
+
 
 def create_sprite(world: esper.World, pos: pygame.Vector2, vel: pygame.Vector2, surface: pygame.Surface) -> int:
     sprite_entity = world.create_entity()
@@ -146,25 +150,16 @@ def create_explosion(world: esper.World, position: pygame.Vector2, explosion_con
     ServiceLocator.sound_service.play(explosion_config["sound"])
     return explosion_entity
 
+
 def create_text(world: esper.World, interface_config: dict, name: str) -> int:
-    text_surface = ServiceLocator.text_service.load_font(
+
+    font = ServiceLocator.text_service.load_font(
         path=interface_config["font"],
         size=interface_config["font_size"])
 
-    text_surface = text_surface.render(
-        interface_config["texts"][name]["text"],
-        True,
-        pygame.Color(interface_config["texts"][name]["color"]["r"],
-                     interface_config["texts"][name]["color"]["g"],
-                     interface_config["texts"][name]["color"]["b"])
-    )
-        
     text_pos = pygame.Vector2(interface_config["texts"][name]["position"]["x"],
-                               interface_config["texts"][name]["position"]["y"])
-    
+                              interface_config["texts"][name]["position"]["y"])
+
     text_entity = create_text_entity(
-        world=world,
-        surface=text_surface,
-        pos=text_pos
-    )
+        world, font, interface_config, name, text_pos)
     return text_entity
