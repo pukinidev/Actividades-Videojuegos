@@ -36,7 +36,7 @@ def create_text_entity(world: esper.World, font: pygame.font.Font, interface_con
     text_entity = world.create_entity()
     world.add_component(text_entity, CSurface.from_text(
         font=font,
-        config=interface_config["texts"][name]
+        text_config=interface_config["texts"][name]
     ))
     world.add_component(text_entity, CTransform(
         pos=text_pos
