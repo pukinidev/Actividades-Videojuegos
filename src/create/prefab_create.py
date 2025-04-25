@@ -152,7 +152,6 @@ def create_explosion(world: esper.World, position: pygame.Vector2, explosion_con
 
 
 def create_static_text(world: esper.World, interface_config: dict, name: str) -> int:
-
     font = ServiceLocator.text_service.load_font(
         path=interface_config["font"],
         size=interface_config["font_size"])
