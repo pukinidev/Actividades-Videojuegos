@@ -57,7 +57,8 @@ class GameEngine:
         while self.is_running:
             self._calculate_time()
             self._process_events()
-            self._update()
+            if not self.is_paused:
+                self._update()
             self._draw()
         self._clean()
 
@@ -87,8 +88,6 @@ class GameEngine:
                 self.is_paused = not self.is_paused  
                 
     def _update(self):
-        if self.is_paused:
-            return 
         system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies)
         system_movement(self.ecs_world, self.delta_time)
 
