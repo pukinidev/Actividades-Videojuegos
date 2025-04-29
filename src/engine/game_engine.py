@@ -2,7 +2,7 @@ import esper
 import pygame
 
 from src.cfg.load_settings import ConfigLoader
-from src.create.prefab_create import create_bullet, create_dynamic_text, create_input_player, create_spawner_entity, create_player_square, create_static_text
+from src.create.prefab_create import create_bullet, create_dynamic_text, create_input_player, create_spawner_entity, create_player_square, create_special_bullet
 from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
@@ -34,6 +34,7 @@ class GameEngine:
         self.level = self.loader.get_level_01_config()
         self.player = self.loader.get_player_config()
         self.bullet = self.loader.get_bullet_config()
+        self.special_bullet = self.loader.get_special_bullet_config()
         self.explosion = self.loader.get_explosion_config()
         self.interface = self.loader.get_interface_config()
         self.screen = pygame.display.set_mode((
@@ -48,9 +49,12 @@ class GameEngine:
         self.delta_time = 0
         self.ecs_world = esper.World()
         self.font = ServiceLocator.text_service.load_font(
-        path=self.interface["font"],
-        size=self.interface["font_size"])
-        
+            path=self.interface["font"],
+            size=self.interface["font_size"]
+        )
+        self.special_attack_cooldown = 0 
+        self.special_attack_uses = 0
+
     def run(self) -> None:
         self._create()
         self.is_running = True
@@ -80,7 +84,6 @@ class GameEngine:
             "GAME",
             False,
         )
-        
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
@@ -91,14 +94,19 @@ class GameEngine:
             if event.type == pygame.QUIT:
                 self.is_running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-                self.is_paused = not self.is_paused  
+                self.is_paused = not self.is_paused
             elif not self.is_paused:
                 system_player_input(self.ecs_world, event, self._do_action)
-                
+
     def _update(self):
+        
+        if self.special_attack_cooldown > 0:
+            self.special_attack_cooldown -= self.delta_time
+            
+        
         system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies)
         system_movement(self.ecs_world, self.delta_time)
-
+ 
         system_player_state(self.ecs_world)
         system_enemy_hunter_state(
             self.ecs_world, self.player_entity, self.enemies["Hunter"])
@@ -137,6 +145,32 @@ class GameEngine:
             self._handle_vertical_movement(c_input)
         elif c_input.name == "PLAYER_FIRE":
             self._handle_fire_action(c_input)
+        elif c_input.name == "PLAYER_SPECIAL":
+            self._handle_special_attack()
+        
+
+    def _handle_special_attack(self):
+        max_uses = self.special_bullet["max_uses"]
+        if self.special_attack_cooldown <= 0 and self.special_attack_uses < max_uses:
+            directions = [
+                pygame.Vector2(1, 0),   
+                pygame.Vector2(-1, 0),  
+                pygame.Vector2(0, -1),  
+                pygame.Vector2(0, 1),   
+                pygame.Vector2(1, -1),  
+                pygame.Vector2(-1, -1)  
+            ]
+            for direction in directions:
+                create_special_bullet(
+                    self.ecs_world,
+                    direction,
+                    self.player_c_t.pos,
+                    self.player_c_s.area.size,
+                    self.special_bullet
+                )
+            self.special_attack_cooldown = self.special_bullet["recharge_time"]
+            self.special_attack_uses += 1  
+        
 
     def _handle_horizontal_movement(self, c_input: CInputCommand):
         velocity_change = self.player["input_velocity"]

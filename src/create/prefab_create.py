@@ -113,6 +113,7 @@ def create_input_player(world: esper.World) -> int:
     input_up = world.create_entity()
     input_down = world.create_entity()
     input_fire = world.create_entity()
+    input_special = world.create_entity()
     world.add_component(input_left, CInputCommand(
         "PLAYER_LEFT", pygame.K_LEFT
     ))
@@ -128,6 +129,9 @@ def create_input_player(world: esper.World) -> int:
     world.add_component(input_fire, CInputCommand(
         "PLAYER_FIRE", pygame.BUTTON_LEFT
     ))
+    world.add_component(input_special, CInputCommand(
+        "PLAYER_SPECIAL", pygame.K_SPACE
+    ))
 
 
 def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pygame.Vector2, player_size: pygame.Vector2, bullet_config: dict) -> int:
@@ -140,6 +144,19 @@ def create_bullet(world: esper.World, mouse_pos: pygame.Vector2, player_pos: pyg
     bullet_entity = create_sprite(world, pos, vel, bullet_surface)
     world.add_component(bullet_entity, CTagBullet())
     ServiceLocator.sound_service.play(bullet_config["sound"])
+    
+def create_special_bullet(world: esper.World, direction: pygame.Vector2, player_pos: pygame.Vector2, player_size: tuple, bullet_config: dict) -> int:
+    bullet_surface = ServiceLocator.images_service.get(bullet_config["image"])
+    bullet_size = bullet_surface.get_rect().size
+    pos = pygame.Vector2(
+        player_pos.x + (player_size[0] / 2) - (bullet_size[0] / 2),
+        player_pos.y + (player_size[1] / 2) - (bullet_size[1] / 2)
+    )
+    vel = direction.normalize() * bullet_config["velocity"]
+    bullet_entity = create_sprite(world, pos, vel, bullet_surface)
+    world.add_component(bullet_entity, CTagBullet())
+    ServiceLocator.sound_service.play(bullet_config["sound"])
+    return bullet_entity
 
 
 def create_explosion(world: esper.World, position: pygame.Vector2, explosion_config: dict) -> int:

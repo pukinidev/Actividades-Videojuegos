@@ -1,0 +1,7 @@
+{
+    "sound" : "assets/snd/laser_special.ogg",
+    "image": "assets/img/bullet_especial.png",
+    "velocity": 200,
+    "recharge_time": 4,
+    "max_uses": 3
+}
