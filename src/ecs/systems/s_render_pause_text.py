@@ -12,6 +12,7 @@ def system_render_pause_text(world: esper.World, is_paused: bool, font, text_con
                 font=font,
                 text_config=text_config,
                 name="PAUSE",
+                center=True,
             )
             world.add_component(entity, CTagPause())
     else:

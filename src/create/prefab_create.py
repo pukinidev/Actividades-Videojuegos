@@ -32,12 +32,16 @@ def create_square(world: esper.World, size: pygame.Vector2, pos: pygame.Vector2,
     return cuad_entity
 
 
-def create_text_entity(world: esper.World, font: pygame.font.Font, interface_config: dict, name: str, text_pos: pygame.Vector2) -> int:
+def create_text_entity(world: esper.World, font: pygame.font.Font, interface_config: dict, name: str, text_pos: pygame.Vector2, center: bool) -> int:
     text_entity = world.create_entity()
-    world.add_component(text_entity, CSurface.from_text(
+    text_surface = CSurface.from_text(
         font=font,
         text_config=interface_config["texts"][name]
-    ))
+    )
+    if center:
+        text_pos.x -= text_surface.area.size[0] / 2
+        text_pos.y -= text_surface.area.size[1] / 2
+    world.add_component(text_entity, text_surface)
     world.add_component(text_entity, CTransform(
         pos=text_pos
     ))
@@ -151,7 +155,7 @@ def create_explosion(world: esper.World, position: pygame.Vector2, explosion_con
     return explosion_entity
 
 
-def create_static_text(world: esper.World, interface_config: dict, name: str) -> int:
+def create_static_text(world: esper.World, interface_config: dict, name: str, center: bool) -> int:
     font = ServiceLocator.text_service.load_font(
         path=interface_config["font"],
         size=interface_config["font_size"])
@@ -159,13 +163,13 @@ def create_static_text(world: esper.World, interface_config: dict, name: str) ->
     text_pos = pygame.Vector2(interface_config["texts"][name]["position"]["x"],
                               interface_config["texts"][name]["position"]["y"])
 
-    text_entity = create_text_entity(world, font, interface_config, name, text_pos)
+    text_entity = create_text_entity(world, font, interface_config, name, text_pos, center)
     return text_entity
 
 
-def create_dynamic_text(world: esper.World, font: pygame.font.Font, text_config: dict, name: str) -> int:
+def create_dynamic_text(world: esper.World, font: pygame.font.Font, text_config: dict, name: str, center: bool) -> int:
     text_pos = pygame.Vector2(text_config["texts"][name]["position"]["x"],
                               text_config["texts"][name]["position"]["y"])
-    text_entity = create_text_entity(world, font, text_config, name, text_pos)
+    text_entity = create_text_entity(world, font, text_config, name, text_pos, center)
     return text_entity
     
