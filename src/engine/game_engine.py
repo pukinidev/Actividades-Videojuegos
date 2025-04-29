@@ -51,8 +51,6 @@ class GameEngine:
         path=self.interface["font"],
         size=self.interface["font_size"])
         
-
-
     def run(self) -> None:
         self._create()
         self.is_running = True
