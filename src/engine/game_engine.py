@@ -66,7 +66,7 @@ class GameEngine:
             self.player_entity, CSurface)
         create_spawner_entity(self.ecs_world, self.level["enemy_spawn_events"])
         create_input_player(self.ecs_world)
-        create_static_text(self.ecs_world,self.interface,"START")
+        
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)
