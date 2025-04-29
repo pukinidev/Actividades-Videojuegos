@@ -73,6 +73,13 @@ class GameEngine:
             self.player_entity, CSurface)
         create_spawner_entity(self.ecs_world, self.level["enemy_spawn_events"])
         create_input_player(self.ecs_world)
+        create_dynamic_text(
+            self.ecs_world,
+            self.font,
+            self.interface,
+            "GAME",
+            False,
+        )
         
 
     def _calculate_time(self):
