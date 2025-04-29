@@ -81,11 +81,12 @@ class GameEngine:
 
     def _process_events(self):
         for event in pygame.event.get():
-            system_player_input(self.ecs_world, event, self._do_action)
             if event.type == pygame.QUIT:
                 self.is_running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 self.is_paused = not self.is_paused  
+            elif not self.is_paused:
+                system_player_input(self.ecs_world, event, self._do_action)
                 
     def _update(self):
         system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies)
