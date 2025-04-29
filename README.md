@@ -1,3 +1,4 @@
-# Ejercicio – Rectángulo que dispara y elimina otros rectángulos en el mundo
+# Ejercicio – Semana 4
 
-Este proyecto contiene el ejercicio propuesto para la semana 2.
+* Link del proyecto en ITCH.IO
+  * [MISO - JUEGO by pukinidev](https://pukinidev.itch.io/miso-juego)
