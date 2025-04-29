@@ -2,7 +2,7 @@ import esper
 import pygame
 
 from src.cfg.load_settings import ConfigLoader
-from src.create.prefab_create import create_bullet, create_input_player, create_spawner_entity, create_player_square, create_static_text
+from src.create.prefab_create import create_bullet, create_dynamic_text, create_input_player, create_spawner_entity, create_player_square, create_static_text
 from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
@@ -16,11 +16,13 @@ from src.ecs.systems.s_explosion import system_explosion
 from src.ecs.systems.s_input_player import system_player_input
 from src.ecs.systems.s_movement import system_movement
 from src.ecs.systems.s_player_state import system_player_state
+from src.ecs.systems.s_render_pause_text import system_render_pause_text
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
 from src.ecs.systems.s_enemy_spawner import system_enemy_spawner
 from src.ecs.systems.s_screen_bullet import system_screen_bullet
 from src.ecs.systems.s_screen_player import system_screen_player
+from src.engine.service_locator import ServiceLocator
 
 
 class GameEngine:
@@ -41,9 +43,15 @@ class GameEngine:
         self.title = pygame.display.set_caption(self.config["title"])
         self.clock = pygame.time.Clock()
         self.is_running = False
+        self.is_paused = False
         self.framerate = self.config["framerate"]
         self.delta_time = 0
         self.ecs_world = esper.World()
+        self.font = ServiceLocator.text_service.load_font(
+        path=self.interface["font"],
+        size=self.interface["font_size"])
+        
+
 
     def run(self) -> None:
         self._create()
@@ -77,8 +85,12 @@ class GameEngine:
             system_player_input(self.ecs_world, event, self._do_action)
             if event.type == pygame.QUIT:
                 self.is_running = False
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                self.is_paused = not self.is_paused  
                 
     def _update(self):
+        if self.is_paused:
+            return 
         system_enemy_spawner(self.ecs_world, self.delta_time, self.enemies)
         system_movement(self.ecs_world, self.delta_time)
 
@@ -106,6 +118,7 @@ class GameEngine:
             self.config["bg_color"]["b"]
         ))
         system_rendering(self.ecs_world, self.screen)
+        system_render_pause_text(self.ecs_world, self.is_paused, self.font, self.interface)
         pygame.display.flip()
 
     def _clean(self):
